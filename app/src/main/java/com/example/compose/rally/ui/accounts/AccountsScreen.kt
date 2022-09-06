@@ -35,7 +35,7 @@ import com.example.compose.rally.ui.components.StatementBody
 fun AccountsScreen(
     onAccountClick: (String) -> Unit = {},
 ) {
-    val amountsTotal = remember { UserData.accounts.map { account -> account.balance }.sum() }
+    val amountsTotal = remember { UserData.accounts.fold(0F) { sum, account -> sum + account.balance }}
     StatementBody(
         modifier = Modifier.semantics { contentDescription = "Accounts Screen" },
         items = UserData.accounts,
