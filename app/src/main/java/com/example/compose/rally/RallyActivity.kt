@@ -39,6 +39,7 @@ import androidx.navigation.navigation
 import com.example.compose.rally.ui.accounts.AccountsScreen
 import com.example.compose.rally.ui.accounts.SingleAccountScreen
 import com.example.compose.rally.ui.bills.BillsScreen
+import com.example.compose.rally.ui.components.RallyNavHost
 import com.example.compose.rally.ui.components.RallyTabRow
 import com.example.compose.rally.ui.overview.OverviewScreen
 import com.example.compose.rally.ui.theme.RallyTheme
@@ -77,38 +78,8 @@ fun RallyApp() {
                 )
             }
         ) { innerPadding ->
-            Box(Modifier.padding(innerPadding)) {
-                NavHost(navController = navController, startDestination = Overview.route, modifier = Modifier.padding(innerPadding)) {
-                    composable(Overview.route) {
-                        OverviewScreen(
-                            onClickSeeAllAccounts = {
-                                navController.navigateSingleTopTo(Accounts.route)
-                            },
-                            onClickSeeAllBills = {
-                                navController.navigateSingleTopTo(Bills.route)
-                            },
-                            onAccountClick = { accountType ->
-                                navController.navigateToSingleDestination(accountType)
-                            }
-                        )
-                    }
-                    composable(Accounts.route) {
-                        AccountsScreen {
-                            navController.navigateSingleTopTo(Accounts.route)
-                        }
-                    }
-                    composable(Bills.route) {
-                        BillsScreen()
-                    }
-                    composable(
-                        SingleAccount.routeWithArgs,
-                        arguments = SingleAccount.arguments,
-                        deepLinks = SingleAccount.deepLinks
-                    ) { navBackStackEntry: NavBackStackEntry ->
-                        val accountType = navBackStackEntry.arguments?.getString(SingleAccount.accountTypeArg)
-                        SingleAccountScreen(accountType)
-                    }
-                }
+            Box {
+                RallyNavHost(navController, Modifier.padding(innerPadding))
             }
         }
     }
