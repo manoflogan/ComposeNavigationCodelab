@@ -20,6 +20,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
@@ -65,18 +66,26 @@ fun SingleAccountScreen(
     accountType: String? = UserData.accounts.first().name
 ) {
     val account = remember(accountType) { UserData.getAccount(accountType) }
+    Statement(account, {account.color}, {account.balance}, {account.balance}, {account.name}) {
+        account.number
+    }
+}
+
+@Composable
+fun <T> Statement(account: T, color: (T) -> Color, balance: (T) -> Float, amountTotal: (T) -> Float,
+                  accountName: (T) -> String, numberRow: (T) -> Int) {
     StatementBody(
         items = listOf(account),
-        colors = { account.color },
-        amounts = { account.balance },
-        amountsTotal = account.balance,
-        circleLabel = account.name,
+        colors = color,
+        amounts = balance,
+        amountsTotal = amountTotal(account),
+        circleLabel = accountName(account)
     ) { row ->
         AccountRow(
-            name = row.name,
-            number = row.number,
-            amount = row.balance,
-            color = row.color
+            name = accountName(row),
+            number = numberRow(row),
+            amount = amountTotal(row),
+            color = color(row)
         )
     }
 }
