@@ -20,13 +20,14 @@ import androidx.compose.foundation.clickable
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import com.example.compose.rally.R
+import com.example.compose.rally.data.Account
 import com.example.compose.rally.data.UserData
 import com.example.compose.rally.ui.components.AccountRow
+import com.example.compose.rally.ui.components.Statement
 import com.example.compose.rally.ui.components.StatementBody
 
 /**
@@ -67,25 +68,11 @@ fun SingleAccountScreen(
 ) {
     val account = remember(accountType) { UserData.getAccount(accountType) }
     Statement(account, {account.color}, {account.balance}, {account.balance}, {account.name}) {
-        account.number
-    }
-}
-
-@Composable
-fun <T> Statement(account: T, color: (T) -> Color, balance: (T) -> Float, amountTotal: (T) -> Float,
-                  accountName: (T) -> String, numberRow: (T) -> Int) {
-    StatementBody(
-        items = listOf(account),
-        colors = color,
-        amounts = balance,
-        amountsTotal = amountTotal(account),
-        circleLabel = accountName(account)
-    ) { row ->
         AccountRow(
-            name = accountName(row),
-            number = numberRow(row),
-            amount = amountTotal(row),
-            color = color(row)
+            name = it.name,
+            number = it.number,
+            amount = it.balance,
+            color = it.color
         )
     }
 }

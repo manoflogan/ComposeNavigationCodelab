@@ -10,11 +10,14 @@ import com.example.compose.rally.Accounts
 import com.example.compose.rally.Bills
 import com.example.compose.rally.Overview
 import com.example.compose.rally.SingleAccount
+import com.example.compose.rally.SingleBill
 import com.example.compose.rally.navigateSingleTopTo
+import com.example.compose.rally.navigateToSingleBillDestination
 import com.example.compose.rally.navigateToSingleDestination
 import com.example.compose.rally.ui.accounts.AccountsScreen
 import com.example.compose.rally.ui.accounts.SingleAccountScreen
 import com.example.compose.rally.ui.bills.BillsScreen
+import com.example.compose.rally.ui.bills.SingleBillScreen
 import com.example.compose.rally.ui.overview.OverviewScreen
 
 @Composable
@@ -30,6 +33,9 @@ fun RallyNavHost(navController: NavHostController, modifier: Modifier = Modifier
                 },
                 onAccountClick = { accountType ->
                     navController.navigateToSingleDestination(accountType)
+                },
+                onBillClick = { billType ->
+                    navController.navigateToSingleBillDestination(billType)
                 }
             )
         }
@@ -39,7 +45,9 @@ fun RallyNavHost(navController: NavHostController, modifier: Modifier = Modifier
             }
         }
         composable(Bills.route) {
-            BillsScreen()
+            BillsScreen { billType: String ->
+                navController.navigateToSingleBillDestination(billType)
+            }
         }
         composable(
             SingleAccount.routeWithArgs,
@@ -48,6 +56,14 @@ fun RallyNavHost(navController: NavHostController, modifier: Modifier = Modifier
         ) { navBackStackEntry: NavBackStackEntry ->
             val accountType = navBackStackEntry.arguments?.getString(SingleAccount.accountTypeArg)
             SingleAccountScreen(accountType)
+        }
+        composable(
+            SingleBill.routeWithArgs,
+            arguments = SingleBill.arguments,
+            deepLinks = SingleBill.deepLinks
+        ) {
+            val billType = it.arguments?.getString(SingleBill.billAccountTypeArg)
+            SingleBillScreen(billType)
         }
     }
 }
