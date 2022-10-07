@@ -34,8 +34,8 @@ fun RallyNavHost(navController: NavHostController, modifier: Modifier = Modifier
             )
         }
         composable(Accounts.route) {
-            AccountsScreen {
-                navController.navigateSingleTopTo(Accounts.route)
+            AccountsScreen { accountType: String ->
+                navController.navigateToSingleDestination(accountType)
             }
         }
         composable(Bills.route) {
