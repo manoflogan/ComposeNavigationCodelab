@@ -24,8 +24,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import com.example.compose.rally.R
+import com.example.compose.rally.data.Account
 import com.example.compose.rally.data.UserData
 import com.example.compose.rally.ui.components.AccountRow
+import com.example.compose.rally.ui.components.Statement
 import com.example.compose.rally.ui.components.StatementBody
 
 /**
@@ -65,18 +67,12 @@ fun SingleAccountScreen(
     accountType: String? = UserData.accounts.first().name
 ) {
     val account = remember(accountType) { UserData.getAccount(accountType) }
-    StatementBody(
-        items = listOf(account),
-        colors = { account.color },
-        amounts = { account.balance },
-        amountsTotal = account.balance,
-        circleLabel = account.name,
-    ) { row ->
+    Statement(account, {account.color}, {account.balance}, {account.balance}, {account.name}) {
         AccountRow(
-            name = row.name,
-            number = row.number,
-            amount = row.balance,
-            color = row.color
+            name = it.name,
+            number = it.number,
+            amount = it.balance,
+            color = it.color
         )
     }
 }

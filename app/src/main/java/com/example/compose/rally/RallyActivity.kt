@@ -98,3 +98,7 @@ fun NavHostController.navigateSingleTopTo(route: String) {
 fun NavHostController.navigateToSingleDestination(accountType: String) {
     this.navigateSingleTopTo("${SingleAccount.route}/$accountType")
 }
+
+fun NavHostController.navigateToSingleBillDestination(billType: String) {
+    this.navigateSingleTopTo("${SingleBill.route}/$billType")
+}

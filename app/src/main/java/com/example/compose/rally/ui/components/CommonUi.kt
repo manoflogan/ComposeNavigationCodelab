@@ -70,14 +70,32 @@ fun AccountRow(
  * A row representing the basic information of a Bill.
  */
 @Composable
-fun BillRow(name: String, due: String, amount: Float, color: Color) {
+fun BillRow(modifier: Modifier, name: String, due: String, amount: Float, color: Color) {
     BaseRow(
+        modifier = modifier,
         color = color,
         title = name,
         subtitle = "Due $due",
         amount = amount,
         negative = true
     )
+}
+
+/**
+ * Generic call back to render the statement
+ */
+@Composable
+fun <T> Statement(account: T, color: (T) -> Color, balance: (T) -> Float, amountTotal: (T) -> Float,
+                  accountName: (T) -> String, composableCallback: @Composable (T) -> Unit) {
+    StatementBody(
+        items = listOf(account),
+        colors = color,
+        amounts = balance,
+        amountsTotal = amountTotal(account),
+        circleLabel = accountName(account)
+    ) { row ->
+        composableCallback(row)
+    }
 }
 
 @Composable

@@ -76,5 +76,22 @@ object SingleAccount : RallyDestination {
     )
 }
 
+object SingleBill: RallyDestination {
+    override val icon: ImageVector = Icons.Filled.MoneyOff
+    override val route: String = "single_bill"
+    const val billAccountTypeArg = "bill_type"
+    val routeWithArgs = "${route}/{${billAccountTypeArg}}"
+    val arguments = listOf(
+        navArgument(billAccountTypeArg) {
+            type = NavType.StringType
+        }
+    )
+    val deepLinks = listOf(
+        navDeepLink {
+            uriPattern = "rally://$route/{${billAccountTypeArg}}"
+        }
+    )
+}
+
 // Screens to be displayed in the top RallyTabRow
 val rallyTabRowScreens = listOf(Overview, Accounts, Bills)
